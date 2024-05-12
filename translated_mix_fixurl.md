@@ -675,21 +675,52 @@ The following examples give standard ways of defining the set of ground types an
 
 1.3.7 示例[树模型]：设路径π为方向的有穷序列。空路径记作ε，路径π和π'的连接记作π·π'。设树t为从路径到类型构造器的部分函数，其定义域非空且前缀封闭，且对于t定义域中的每条路径π，如果类型构造器t(π)的签名是K => κ，那么π·d属于t的定义域等价于d属于K的定义域，此外，对于每个d属于K的定义域，类型构造器t(π·d)的像种类为K(d)。如果π属于t的定义域，则以π为根的t的子树，记作t/π，是部分函数π'映射到t(π·π')。树是有限的当且仅当它具有有限定义域。树是规则的当且仅当它具有有限数量的不同子树。每个有限树因此都是规则的。设 $\mathcal{M}_{\kappa}$ 由那些t(ε)的像种类为κ的有限（分别地，规则）树t组成：那么，我们有一个有限（分别地，规则）的树模型。
 
+译者注：
+
+- 这里的“像”，“Image”就是值域。
+- 首先引入了路径path的概念，然后引入了路径的连接运算。
+- 树，被定义为从路径到类型构造器的映射。树t关于路径 $\pi$ 的类型构造器是 $t(\pi)$ 。
+  - 定义域非空。
+  - 前缀封闭 prefix-closed，表示如果某个路径在树的定义域中，则所有前缀也在定义域中，保证没有凭空悬挂的节点。
+- “ $\pi \cdot d \in \operatorname{dom}(t)$ is equivalent to $d \in \operatorname{dom}(K)$ ” 意思是，假如类型构造器 $t(\pi)$ 有签名 $K \Rightarrow \kappa$ 。 $K$ 理解为类型种类的元组，定义域是下标。对于每个 $K$ 的定义域上的元素，在树上都有一个这样的路径。
+  - 画出来的整个树代表一个类型，而不是某个路径代表一个类型。
+  - 例如：我有个Pair类型。树的根节点是Pair类型。路径1是Int类型，路径2是String类型。整个树代表了 Pair(Int, String) 类型。
+    - 这里Pair类型的签名 $K$ 是`{0: Int, 1: String}`。这里对每个K的定义域d=0/1都有对应的路径，即 $\pi \cdot d \in \operatorname{dom}(t)$ 。因为之前没有路径，这里的 $\pi$ 等于 $\epsilon$ 。然后对于每个节点上的类型构造器，  $t(\pi \cdot d)$ 都有着 $K(d)$ 相同的类型。 比如这里的 $t(\epsilon \cdot 0)$ 有着类型 Int，所以得和类型构造器的签名一致 K(d) ，后面的叶子节点也得是Int类型。
+- 子树的概念：以路径 $\pi$ 为根的子树，记作 $t / \pi$, 和树一样是一个映射，但是映射结果加了一个 $\pi$ 的前缀。
+- 有限的树：有限这个概念指定义域有限。即路径的数量有限。
+- 规则的树：子树的数量有限。这里可能主要是允许了无限长的List类型，因为虽然路径数量无限，内部节点子树都是一样的。
+
+树到底是什么？这里说树只不过是一个从路径到类型构造器的映射。这里没有参数的类型构造器可能就表示普通类型。这里的路径可能表示访问类型内部成员时会出现的可能情况。总之一个树就表示了一个复杂类型。
+
 If $F$ has signature $K \Rightarrow \kappa$, one may interpret $F$ as the function that maps $T \in \mathcal{M}_{K}$ to the ground type $t \in \mathcal{M}_{\kappa}$ defined by $t(\epsilon)=F$ and $t / d=T(d)$ for $d \in \operatorname{dom}(T)$, that is, the unique ground type whose head symbol is $F$ and whose subtree rooted at $d$ is $T(d)$. Then, we have a free tree model. Please note that free finite tree models coincide with syntactic models, as defined in the previous example.
 
 如果$F$具有签名$K \Rightarrow \kappa$，可以将$F$解释为将$\mathcal{M}_{K}$中的$T$映射到由$t(\epsilon)=F$和对于$\operatorname{dom}(T)$中的$d$，$t / d=T(d)$定义的地基层类型$t \in \mathcal{M}_{\kappa}$的函数，即头部符号为$F$且以$d$为根的子树为$T(d)$的唯一地基层类型。然后，我们得到了一个自由树模型。请注意，自由的有限树模型与前面示例中定义的语法模型是一致的。
+
+译者注：这里的自由free指，就按照这些规则，不受到额外的其他约束。这一段话把树模型和原来的语义模型对应起来了，树最终可能的构造和语法得到的是一样的。所以是一致的。
 
 Rows (Section 1.11) are interpreted in a tree model, albeit not a free one. The following examples suggest different ways of interpreting the subtyping predicate.
 
 行（第1.11节）在树模型中解释，尽管不是自由模型。以下示例提出了不同的解释子类型谓词的方式。
 
-1.3.8 EXample [Equality models]: The simplest way of interpreting the subtyping predicate is to let $\leq$ denote equality on every $\mathcal{M}_{\kappa}$. Models that do so are referred to as equality models. When no predicate other than equality is available, we say that the model is equality-only.
+1.3.8 Example [Equality models]: The simplest way of interpreting the subtyping predicate is to let $\leq$ denote equality on every $\mathcal{M}_{\kappa}$. Models that do so are referred to as equality models. When no predicate other than equality is available, we say that the model is equality-only.
 
 1.3.8 示例 [等价性模型]：解释子类型谓词的最简单方式是让 $\leq$ 在每个 $\mathcal{M}_{\kappa}$ 上表示等价性。这样做 的模型被称为等价性模型。当除了等价性之外没有其他谓词可用时，我们称该模型仅为等价性模型。
 
-1.3.9 Example [StRuctURal, NonstructURal SUbtyping]: Let a variance $\nu$ be a nonempty subset of $\{-,+\}$, written - (contravariant), + (covariant), or $\pm$ (invariant) for short. Define the composition of two variances as an associative commutative operation with + as neutral element and such that $--=+$ and $\pm-= \pm \pm= \pm$. Now, consider a free (finite or regular) tree model, where every direction $d$ comes with a fixed variance $\nu(d)$. Define the variance $\nu(\pi)$ of a path $\pi$ as the composition of the variances of its elements. Let $\leqslant$ be a partial order on type constructors such that (i) if $F_{1} \leqslant F_{2}$ holds and $F_{1}$ and $F_{2}$ have signature $K_{1} \Rightarrow \kappa_{1}$ and $K_{2} \Rightarrow \kappa_{2}$, respectively, then $K_{1}$ and $K_{2}$ agree on the intersection of their domains and $\kappa_{1}$ and $\kappa_{2}$ coincide; and (ii) $F_{0} \leqslant F_{1} \leqslant F_{2}$ implies $\operatorname{dom}\left(F_{0}\right) \cap \operatorname{dom}\left(F_{2}\right) \subseteq \operatorname{dom}\left(F_{1}\right)$. Let $\leqslant^{+}, \leqslant^{-}$, and $\leqslant^{ \pm}$stand for $\leqslant, \geqslant$, and $=$, respectively. Then, define the interpretation of subtyping as follows: if $t_{1}, t_{2} \in \mathcal{M}_{\kappa}$, let $t_{1} \leq t_{2}$ hold if and only if, for every path $\pi \in \operatorname{dom}\left(t_{1}\right) \cap \operatorname{dom}\left(t_{2}\right), t_{1}(\pi) \leqslant^{\nu(\pi)} t_{2}(\pi)$ holds. It is not difficult to check that $\leq$ is a partial order on every $\mathcal{M}_{\kappa}$. The reader is referred to (Kozen, Palsberg, and Schwartzbach., 1995) for more details about this construction. Models that define subtyping in this manner are referred to as nonstructural subtyping models.
+1.3.9 Example [Structural, Nonstructural Subtyping]: Let a variance $\nu$ be a nonempty subset of $\{-,+\}$, written - (contravariant), + (covariant), or $\pm$ (invariant) for short. Define the composition of two variances as an associative commutative operation with + as neutral element and such that $--=+$ and $\pm-= \pm \pm= \pm$. Now, consider a free (finite or regular) tree model, where every direction $d$ comes with a fixed variance $\nu(d)$. Define the variance $\nu(\pi)$ of a path $\pi$ as the composition of the variances of its elements. Let $\leqslant$ be a partial order on type constructors such that (i) if $F_{1} \leqslant F_{2}$ holds and $F_{1}$ and $F_{2}$ have signature $K_{1} \Rightarrow \kappa_{1}$ and $K_{2} \Rightarrow \kappa_{2}$, respectively, then $K_{1}$ and $K_{2}$ agree on the intersection of their domains and $\kappa_{1}$ and $\kappa_{2}$ coincide; and (ii) $F_{0} \leqslant F_{1} \leqslant F_{2}$ implies $\operatorname{dom}\left(F_{0}\right) \cap \operatorname{dom}\left(F_{2}\right) \subseteq \operatorname{dom}\left(F_{1}\right)$. Let $\leqslant^{+}, \leqslant^{-}$, and $\leqslant^{ \pm}$stand for $\leqslant, \geqslant$, and $=$, respectively. Then, define the interpretation of subtyping as follows: if $t_{1}, t_{2} \in \mathcal{M}_{\kappa}$, let $t_{1} \leq t_{2}$ hold if and only if, for every path $\pi \in \operatorname{dom}\left(t_{1}\right) \cap \operatorname{dom}\left(t_{2}\right), t_{1}(\pi) \leqslant^{\nu(\pi)} t_{2}(\pi)$ holds. It is not difficult to check that $\leq$ is a partial order on every $\mathcal{M}_{\kappa}$. The reader is referred to (Kozen, Palsberg, and Schwartzbach., 1995) for more details about this construction. Models that define subtyping in this manner are referred to as nonstructural subtyping models.
 
 1.3.9 示例[结构化，非结构化子类型]：设一个变化量$\nu$是集合$\{-,+\}$的一个非空子集，简写为-（逆变），+（协变）或$\pm$（不变）。定义两个变化量的组合作为一个结合交换运算，其中+是中性元素，且满足$--=+$和$\pm-= \pm \pm= \pm$。现在，考虑一个自由（有限或正则）树模型，其中每个方向$d$都附有一个固定的变化量$\nu(d)$。定义路径$\pi$的变化量$\nu(\pi)$为其元素变化量的组合。设$\leqslant$是类型构造器的偏序关系，使得（i）如果$F_{1} \leqslant F_{2}$成立，且$F_{1}$和$F_{2}$分别具有签名$K_{1} \Rightarrow \kappa_{1}$和$K_{2} \Rightarrow \kappa_{2}$，那么$K_{1}$和$K_{2}$在它们的域的交上相同，并且$\kappa_{1}$和$\kappa_{2}$相同；以及（ii）$F_{0} \leqslant F_{1} \leqslant F_{2}$意味着$\operatorname{dom}\left(F_{0}\right) \cap \operatorname{dom}\left(F_{2}\right) \subseteq \operatorname{dom}\left(F_{1}\right)$。设$\leqslant^{+}, \leqslant^{-}$，和$\leqslant^{\pm}$分别表示$\leqslant, \geqslant$和$=$。然后，以下定义子类型的解释：如果$t_{1}, t_{2} \in \mathcal{M}_{\kappa}$，那么仅当对于每个路径$\pi \in \operatorname{dom}\left(t_{1}\right) \cap \operatorname{dom}\left(t_{2}\right)$，$t_{1}(\pi) \leqslant^{\nu(\pi)} t_{2}(\pi)$成立时，才有$t_{1} \leq t_{2}$。不难验证$\leq$在每一个$\mathcal{M}_{\kappa}$上都是一个偏序关系。关于这种构造的更多细节，请参考（Kozen, Palsberg, 和 Schwartzbach., 1995）。以这种方式定义子类型的模型称为非结构化子类型模型。
+
+译者注：
+
+- 子类型关系：子类型可以安全代换父类型。所以父类型是通用的，或者字段少的类型，子类型更具体，或者有更多字段。
+- 逆变和协变的概念。这里向着子类型方向走，如果某个类型构造器是协变的，则内部类型变成了子类型，则构造后的类型也是原来的子类型。
+  - 函数类型 Function，其参数类型逆变，返回类型协变。可以说 Function[Any => Object] 是 Function[Int => String] 的超类型，因为 Any 是 Int 的超类型（参数逆变），String 是 Object 的子类型（返回协变）。
+- 逆变和协变的组合，这里有点类似数学里面的单调函数叠加。协变看作递增函数，逆变看作递减函数
+  - `++ = +`: 两个协变组合还是协变。两个单调递增函数嵌套还是单增。
+  - `-- = +`: 两个逆变组合成协变。两个单调递减函数嵌套得到单调递增函数
+  - `+- = -`: 协变和逆变组合成逆变。单调递增和单调递减嵌套还是递减。
+  - `±- = ±± = ±`: 任何与不变组合都保持不变。这里不太一样了。不变把要求卡死，不能增也不能减了。
+- 类型构造器的偏序关系：注意不是类型的偏序关系。
 
 A simple nonstructural subtyping model is obtained by letting the directions domain and codomain be contra- and covariant, respectively, and introducing, in addition to the type constructor $\rightarrow$, two type constructors $\perp$ and $T$ of signature $\star$. This gives rise to a model where $\perp$ is the least ground type, $T$ is the greatest ground type, and the arrow type constructor is, as usual, contravariant in its domain and covariant in its codomain.
 
