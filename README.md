@@ -16,3 +16,8 @@
    - 生成了纯翻译结果`translated.md`以及中英混合的`translated_mix.md`
 3. 使用fix_url.py将markdown的图片下载到本地。生成`translated_mix_fixurl.md`
 4. （未完全完成） 人工校对，使用GPT4等大模型辅助理解，并记录下相应的笔记。
+
+目前校对并增加了笔记的章节：
+
+- 1.2节：1.2.12 开始的后半部分 
+- 1.3节：到1.3.9左右
